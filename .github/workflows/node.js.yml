@@ -1,28 +1,22 @@
-name: Node.js CI
+name: 检查项目是否正常构建
 
 on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
+      - name: 检出仓库代码
+        uses: actions/checkout@v4
+      - name: 安装 Node.js 运行环境
+        uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: "pnpm"
-
-      - name: Install pnpm
-        run: npm install -g pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build
-        run: pnpm build
+      - name: 安装项目依赖
+        run: npm ci
+      - name: 构建项目
+        run: npm run build
