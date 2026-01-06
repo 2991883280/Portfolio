@@ -232,7 +232,7 @@ a[href],
 
 .top-nav-dropdown {
   position: fixed;
-  top: 110px;
+  top: 85px;
   left: 50%;
   transform: translateX(-50%);
   min-width: 420px;
@@ -245,6 +245,8 @@ a[href],
   flex-direction: column;
   gap: 0.35rem;
   overflow: hidden;
+
+  transform-origin: top center;
   animation: top-nav-dropdown-open 0.45s cubic-bezier(0.25, 1.35, 0.4, 1) both;
 }
 
@@ -268,7 +270,6 @@ a[href],
   0% {
     transform: translateX(-50%) scaleY(0.1);
     opacity: 0;
-    transform-origin: top;
   }
   60% {
     transform: translateX(-50%) scaleY(1.02);

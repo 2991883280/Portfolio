@@ -50,24 +50,23 @@ function App() {
             </div>
           </div>
         </div>
+        {menuOpen && (
+          <div className="top-nav-dropdown">
+            <button type="button" className="top-nav-dropdown-item">
+              作品集 · Projects
+            </button>
+            <button type="button" className="top-nav-dropdown-item">
+              关于我 · About
+            </button>
+            <button type="button" className="top-nav-dropdown-item">
+              博客 / 记录 · Notes
+            </button>
+            <button type="button" className="top-nav-dropdown-item">
+              联系方式 · Contact
+            </button>
+          </div>
+        )}
       </header>
-
-      {menuOpen && (
-        <div className="top-nav-dropdown">
-          <button type="button" className="top-nav-dropdown-item">
-            作品集 · Projects
-          </button>
-          <button type="button" className="top-nav-dropdown-item">
-            关于我 · About
-          </button>
-          <button type="button" className="top-nav-dropdown-item">
-            博客 / 记录 · Notes
-          </button>
-          <button type="button" className="top-nav-dropdown-item">
-            联系方式 · Contact
-          </button>
-        </div>
-      )}
 
       <Hero />
     </div>
