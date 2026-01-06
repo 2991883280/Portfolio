@@ -12,9 +12,9 @@ function App() {
           <button type="button" className="top-nav-item">
             作品
           </button>
-          <button type="button" className="top-nav-item">
+          {/* <button type="button" className="top-nav-item">
             关于
-          </button>
+          </button> */}
           {/* <button type="button" className="top-nav-item">
             联系
           </button> */}
