@@ -1,75 +1,56 @@
-import { useState } from "react";
+import { useRef } from "react";
 import "./App.css";
 import Hero from "./sections/Hero";
+import ProjectsStrip from "./sections/ProjectsStrip";
+import TextScene from "./sections/TextScene";
+import OpenSourceShowcase from "./sections/OpenSourceShowcase";
+import BigFooter from "./sections/BigFooter";
+import IntroGate from "./components/layout/IntroGate";
+import TopNav from "./components/layout/TopNav";
+import { useIntroGate } from "./hooks/useIntroGate";
+import { useTopNavMenu } from "./hooks/useTopNavMenu";
 
 function App() {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const headerRef = useRef<HTMLElement | null>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const shellRef = useRef<HTMLDivElement | null>(null);
+  const { introVisible, introAnimatingOut, handleIntroEnter, introReady } =
+    useIntroGate();
 
-  const handleToggleMenu = () => {
-    setMenuOpen((open) => !open);
-  };
+  const { menuOpen, menuAnimatingOut, handleToggleMenu } = useTopNavMenu(
+    headerRef,
+    dropdownRef
+  );
+
+  const appRootClassName = introVisible
+    ? "app-root app-root--intro-open"
+    : "app-root";
 
   return (
-    <div className="app-root">
-      <header className={`top-nav ${menuOpen ? "top-nav--open" : ""}`}>
-        <div className="top-nav-inner">
-          <div className="top-nav-left">
-            <button
-              type="button"
-              className="top-nav-menu-toggle"
-              onClick={handleToggleMenu}
-            >
-              <span className="top-nav-menu-icon">≡</span>
-              <span className="top-nav-menu-label">菜单</span>
-            </button>
-          </div>
+    <div className={appRootClassName}>
+      <IntroGate
+        visible={introVisible}
+        animatingOut={introAnimatingOut}
+        onEnter={handleIntroEnter}
+      />
 
-          <div className="top-nav-center">
-            <span className="top-nav-logo">冷鱼闲风</span>
-          </div>
+      <TopNav
+        ref={headerRef}
+        menuOpen={menuOpen}
+        menuAnimatingOut={menuAnimatingOut}
+        onToggleMenu={handleToggleMenu}
+        dropdownRef={dropdownRef}
+      />
 
-          <div className="top-nav-right">
-            <div className="top-nav-actions">
-              {/* <button type="button" className="top-nav-pill top-nav-pill-muted">
-                登录
-              </button> */}
-              <button
-                type="button"
-                className="top-nav-pill top-nav-pill-accent"
-              >
-                加入
-              </button>
-            </div>
-          </div>
+      {/* Only start Hero and Projects animations after intro gate is fully gone */}
+      <div className="hero-projects-shell" ref={shellRef}>
+        <Hero introReady={introReady} />
+        <ProjectsStrip introReady={introReady} shellRef={shellRef} />
+        <TextScene />
+      </div>
 
-          <div className="top-nav-ticker">
-            <div className="top-nav-ticker-track">
-              冷鱼闲风 · Developer × AI Product × Design · 个人实验场
-              &nbsp;&nbsp; · &nbsp;&nbsp; 冷鱼闲风 · Developer × AI Product ×
-              Design · 个人实验场 &nbsp;&nbsp; · &nbsp;&nbsp;
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {menuOpen && (
-        <div className="top-nav-dropdown">
-          <button type="button" className="top-nav-dropdown-item">
-            作品集 · Projects
-          </button>
-          <button type="button" className="top-nav-dropdown-item">
-            关于我 · About
-          </button>
-          <button type="button" className="top-nav-dropdown-item">
-            博客 / 记录 · Notes
-          </button>
-          <button type="button" className="top-nav-dropdown-item">
-            联系方式 · Contact
-          </button>
-        </div>
-      )}
-
-      <Hero />
+      <OpenSourceShowcase />
+      <BigFooter />
     </div>
   );
 }

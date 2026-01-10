@@ -1,10 +1,15 @@
 import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { Physics2DPlugin } from "gsap/Physics2DPlugin";
+import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 
-gsap.registerPlugin(Physics2DPlugin);
+gsap.registerPlugin(MotionPathPlugin, ScrambleTextPlugin);
 
-const Hero = () => {
+type HeroProps = {
+  introReady?: boolean;
+};
+
+const Hero = ({ introReady = true }: HeroProps) => {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const titleRef = useRef<HTMLHeadingElement | null>(null);
   const subtitleRef = useRef<HTMLParagraphElement | null>(null);
@@ -13,9 +18,11 @@ const Hero = () => {
   const circleRef = useRef<HTMLDivElement | null>(null);
   const squareRef = useRef<HTMLDivElement | null>(null);
   const triangleRef = useRef<HTMLDivElement | null>(null);
+  const orbitPathRef = useRef<SVGPathElement | null>(null);
+  const orbitDotRef = useRef<SVGCircleElement | null>(null);
 
   useLayoutEffect(() => {
-    if (!rootRef.current) return;
+    if (!introReady || !rootRef.current) return;
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
@@ -27,39 +34,50 @@ const Hero = () => {
       );
 
       if (titleRef.current) {
-        const words = titleRef.current.querySelectorAll(".hero-word");
-        const viewportH = window.innerHeight;
-        const groundY = viewportH - 140; // 贴近页面底部，留一点空间
+        const words =
+          titleRef.current.querySelectorAll<HTMLElement>(".hero-word");
 
-        // Phase 1: physics-based fall from顶部到接近底部，力度更大
-        tl.fromTo(
-          words,
-          {
-            y: -viewportH,
-            opacity: 1,
-          },
-          {
-            duration: 1.1,
-            physics2D: {
-              velocity: 1400,
-              angle: 90,
-              gravity: 2600,
-            },
-            stagger: 0.04,
-            onComplete: () => {
-              // 统一落在靠近底部的一条“地面线”
-              gsap.set(words, { y: groundY });
-            },
-          },
-          "-=0.3"
-        );
+        words.forEach((word, index) => {
+          const finalText = word.textContent || "";
+          // 先清空文字，避免初始闪现
+          word.textContent = "";
 
-        // Phase 2: 从底部“地面线”快速吸回标题位置
-        tl.to(words, {
-          y: 0,
-          duration: 0.7,
-          ease: "power3.out",
-          stagger: 0.03,
+          gsap.to(word, {
+            duration: 1.4,
+            delay: 0.4 + index * 0.12,
+            scrambleText: {
+              text: finalText,
+              chars: "01/\\_-+*",
+              speed: 0.4,
+            },
+            ease: "power2.out",
+          });
+        });
+      }
+
+      if (orbitPathRef.current && orbitDotRef.current) {
+        const path = orbitPathRef.current;
+        const dot = orbitDotRef.current;
+
+        gsap.set(dot, { opacity: 0 });
+
+        gsap.to(dot, {
+          opacity: 1,
+          duration: 0.8,
+          delay: 0.8,
+          ease: "power1.out",
+        });
+
+        gsap.to(dot, {
+          duration: 18,
+          repeat: -1,
+          ease: "none",
+          motionPath: {
+            path,
+            align: path,
+            autoRotate: false,
+            alignOrigin: [0.5, 0.5],
+          },
         });
       }
 
@@ -128,16 +146,82 @@ const Hero = () => {
         );
       }
     }, rootRef);
+    let handleMouseMove: ((event: MouseEvent) => void) | undefined;
 
-    return () => ctx.revert();
-  }, []);
+    if (leftTextRef.current || rightTextRef.current) {
+      const leftEl = leftTextRef.current;
+      const rightEl = rightTextRef.current;
+
+      handleMouseMove = (event: MouseEvent) => {
+        const vw = window.innerWidth || 1;
+        const threshold = 140; // px from each edge
+        const x = event.clientX;
+
+        // 左侧：鼠标越靠近左边缘，文字越往内缩一点
+        if (leftEl) {
+          const leftIntensity = Math.max(
+            0,
+            Math.min(1, (threshold - x) / threshold)
+          );
+          const leftOffset = leftIntensity * 14; // 向右偏移
+          gsap.to(leftEl, {
+            x: leftOffset,
+            duration: 0.35,
+            ease: "sine.out",
+          });
+        }
+
+        // 右侧：鼠标越靠近右边缘，文字越往内缩一点
+        if (rightEl) {
+          const rightDist = vw - x;
+          const rightIntensity = Math.max(
+            0,
+            Math.min(1, (threshold - rightDist) / threshold)
+          );
+          const rightOffset = -rightIntensity * 14; // 向左偏移
+          gsap.to(rightEl, {
+            x: rightOffset,
+            duration: 0.35,
+            ease: "sine.out",
+          });
+        }
+      };
+
+      window.addEventListener("mousemove", handleMouseMove);
+    }
+
+    return () => {
+      ctx.revert();
+      if (handleMouseMove) {
+        window.removeEventListener("mousemove", handleMouseMove);
+      }
+    };
+  }, [introReady]);
 
   return (
     <main className="hero-root" ref={rootRef}>
       <div className="hero-decor-layer">
         <div className="hero-decor hero-decor-circle" ref={circleRef} />
         <div className="hero-decor hero-decor-square" ref={squareRef} />
-        <div className="hero-decor hero-decor-triangle" ref={triangleRef} />
+
+        <svg
+          className="hero-orbit-svg"
+          viewBox="0 0 400 160"
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <path
+            ref={orbitPathRef}
+            className="hero-orbit-path"
+            d="M20 120 C 120 20, 280 20, 380 120"
+          />
+          <circle
+            ref={orbitDotRef}
+            className="hero-orbit-dot"
+            r="4"
+            cx="20"
+            cy="120"
+          />
+        </svg>
       </div>
 
       <div className="side-text side-text-left" ref={leftTextRef}>
