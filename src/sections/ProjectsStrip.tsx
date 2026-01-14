@@ -531,12 +531,30 @@ const ProjectsStrip = ({ introReady = true, shellRef }: ProjectsStripProps) => {
       y: -300,
       opacity: 0,
       scale: 1,
-      duration: 1,
+      duration: 0.5,
       ease: "power2.in",
       onComplete: () => {
         setActiveProject(null);
       },
     });
+  };
+
+  const handleCardClick = (project: ProjectCard) => {
+    try {
+      if (!expandAudioRef.current) {
+        expandAudioRef.current = new Audio("/expand.mp3");
+        expandAudioRef.current.volume = 0.4;
+      }
+
+      expandAudioRef.current.currentTime = 0;
+      expandAudioRef.current.play().catch(() => {
+        // ignore play errors
+      });
+    } catch {
+      // ignore Audio construction errors
+    }
+
+    setActiveProject(project);
   };
 
   // Animate modal panel entrance: drop down from top with a soft bounce
@@ -562,7 +580,7 @@ const ProjectsStrip = ({ introReady = true, shellRef }: ProjectsStripProps) => {
           y: 0,
           opacity: 1,
           scale: 1,
-          duration: 1,
+          duration: 0.5,
           ease: "power2.out",
         }
       );
@@ -588,22 +606,7 @@ const ProjectsStrip = ({ introReady = true, shellRef }: ProjectsStripProps) => {
                 id="card-click"
                 className="project-card"
                 key={projectId}
-                onClick={() => {
-                  setActiveProject(project);
-                  try {
-                    if (!expandAudioRef.current) {
-                      expandAudioRef.current = new Audio("/expand.mp3");
-                      expandAudioRef.current.volume = 0.3;
-                    }
-
-                    expandAudioRef.current.currentTime = 0;
-                    expandAudioRef.current.play().catch(() => {
-                      // ignore play errors
-                    });
-                  } catch {
-                    // ignore Audio construction errors
-                  }
-                }}
+                onClick={() => handleCardClick(project)}
               >
                 <div className={"project-card-thumb " + thumbClass} />
                 <h3 className="project-card-title">{project.title}</h3>
