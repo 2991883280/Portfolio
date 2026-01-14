@@ -71,6 +71,7 @@ const OpenSourceShowcase = () => {
   const [pageIndex, setPageIndex] = useState(0);
   const [isShuffling, setIsShuffling] = useState(false);
 
+  const hoverAudioRef = useRef<HTMLAudioElement | null>(null);
   useLayoutEffect(() => {
     if (!sectionRef.current) return;
 
@@ -210,6 +211,20 @@ const OpenSourceShowcase = () => {
             disabled={isShuffling}
             onClick={() => {
               if (!sectionRef.current || isShuffling) return;
+
+              try {
+                if (!hoverAudioRef.current) {
+                  hoverAudioRef.current = new Audio("/clickSmall.mp3");
+                  hoverAudioRef.current.volume = 0.3;
+                }
+
+                hoverAudioRef.current.currentTime = 0;
+                hoverAudioRef.current.play().catch(() => {
+                  // ignore play errors
+                });
+              } catch {
+                // ignore Audio construction errors
+              }
 
               const cards =
                 sectionRef.current.querySelectorAll<HTMLElement>(

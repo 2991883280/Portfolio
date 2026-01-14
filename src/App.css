@@ -342,7 +342,6 @@ body::-webkit-scrollbar-thumb {
   font-size: 0.8rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  cursor: pointer;
 }
 
 .top-nav-actions {
@@ -1393,7 +1392,6 @@ body::-webkit-scrollbar-thumb {
   text-transform: uppercase;
   background: #f9fafb;
   color: #020617;
-  cursor: pointer;
 }
 
 .oss-vault-card:hover {
@@ -1416,7 +1414,6 @@ body::-webkit-scrollbar-thumb {
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: rgba(226, 232, 240, 0.9);
-  cursor: pointer;
 }
 
 .oss-shuffle-btn:hover {
@@ -1487,14 +1484,21 @@ body::-webkit-scrollbar-thumb {
 }
 
 .big-footer-meta {
-  margin-top: 0.75rem;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
-  font-size: 0.72rem;
-  letter-spacing: 0.24em;
+  gap: 1.25rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: rgba(148, 163, 184, 0.9);
+}
+
+.big-footer-meta-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
 }
 
 .big-footer-tags {
@@ -1510,6 +1514,33 @@ body::-webkit-scrollbar-thumb {
 
 .big-footer-copy {
   opacity: 0.9;
+}
+
+.big-footer-socials {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.big-footer-social {
+  padding: 0.48rem 0.7rem;
+  border-radius: 6px;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  background: transparent;
+  color: rgba(248, 250, 252, 0.9);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.big-footer-social:hover {
+  border-color: rgba(182, 255, 43, 0.9);
+  color: #f9fafb;
+}
+
+.big-footer-icon {
+  width: 18px;
+  height: 18px;
+  display: block;
 }
 
 @media (max-width: 768px) {
