@@ -1278,10 +1278,11 @@ body::-webkit-scrollbar-thumb {
 }
 
 .oss-track {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  display: inline-flex;
   gap: 2rem;
+
   padding-bottom: 0.6rem;
+  -webkit-overflow-scrolling: touch;
 }
 
 .oss-track::-webkit-scrollbar {
@@ -1411,7 +1412,6 @@ body::-webkit-scrollbar-thumb {
 
 @media (max-width: 1024px) {
   .oss-track {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.4rem;
   }
 }

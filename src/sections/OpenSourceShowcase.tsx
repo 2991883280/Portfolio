@@ -60,10 +60,15 @@ const OSS_REPOS: OpenSourceRepoCard[] = [
   },
 ];
 
+const OSS_PAGE_SIZE = 3;
+const OSS_TOTAL_PAGES = Math.ceil(OSS_REPOS.length / OSS_PAGE_SIZE);
+
 const OpenSourceShowcase = () => {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const [visibleRepos, setVisibleRepos] =
-    useState<OpenSourceRepoCard[]>(OSS_REPOS);
+  const [visibleRepos, setVisibleRepos] = useState<OpenSourceRepoCard[]>(
+    OSS_REPOS.slice(0, OSS_PAGE_SIZE)
+  );
+  const [pageIndex, setPageIndex] = useState(0);
   const [isShuffling, setIsShuffling] = useState(false);
 
   useLayoutEffect(() => {
@@ -126,10 +131,26 @@ const OpenSourceShowcase = () => {
             });
           }
 
-          // Create a gentle horizontal / vertical sway (no rotation)
+          // Set initial rotation so center card正面，两侧略微倾斜
+          cards.forEach((card, index) => {
+            const mid = (cards.length - 1) / 2;
+            const offset = index - mid;
+            const baseRot = gsap.utils.clamp(-16, 16, offset * 8);
+            gsap.set(card, {
+              rotation: baseRot,
+              transformOrigin: "50% 100%",
+            });
+          });
+
+          // Create an orbital-style horizontal sway with rotation
           gsap.to(cards, {
             x: (i) => (i - (cards.length - 1) / 2) * 12,
             y: (i) => Math.abs(i - (cards.length - 1) / 2) * 3,
+            rotation: (i) => {
+              const mid = (cards.length - 1) / 2;
+              const offset = i - mid;
+              return gsap.utils.clamp(-22, 22, offset * 10);
+            },
             duration: 5.5,
             ease: "sine.inOut",
             yoyo: true,
@@ -204,16 +225,17 @@ const OpenSourceShowcase = () => {
 
               const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
-              // On mobile: simple data shuffle without animation
+              const nextPage = (pageIndex + 1) % OSS_TOTAL_PAGES;
+
+              const applyPage = () => {
+                setPageIndex(nextPage);
+                const start = nextPage * OSS_PAGE_SIZE;
+                setVisibleRepos(OSS_REPOS.slice(start, start + OSS_PAGE_SIZE));
+              };
+
+              // On mobile: simple paging without animation
               if (isMobile) {
-                setVisibleRepos((prev) => {
-                  const next = [...prev];
-                  for (let i = next.length - 1; i > 0; i -= 1) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [next[i], next[j]] = [next[j], next[i]];
-                  }
-                  return next;
-                });
+                applyPage();
                 return;
               }
 
@@ -244,15 +266,8 @@ const OpenSourceShowcase = () => {
                   "<"
                 )
                 .add(() => {
-                  // 中间时刻替换卡片里的数据，模拟重新发牌
-                  setVisibleRepos((prev) => {
-                    const next = [...prev];
-                    for (let i = next.length - 1; i > 0; i -= 1) {
-                      const j = Math.floor(Math.random() * (i + 1));
-                      [next[i], next[j]] = [next[j], next[i]];
-                    }
-                    return next;
-                  });
+                  // 中间时刻切换到下一页数据
+                  applyPage();
                 })
                 .to(cards, {
                   scale: 1,
