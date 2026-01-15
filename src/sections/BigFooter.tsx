@@ -116,6 +116,7 @@ const BigFooter = () => {
                 </svg>
               </button>
             </div>
+
             <div className="big-footer-copy">
               © {new Date().getFullYear()} VIYRS. All rights reserved.
             </div>

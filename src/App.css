@@ -1647,7 +1647,12 @@ body::-webkit-scrollbar-thumb {
   }
 
   .big-footer-meta-right {
+    margin-top: 20px;
     align-items: flex-start;
+  }
+
+  .big-footer-tags {
+    display: none;
   }
 
   .big-footer-socials {
