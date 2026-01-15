@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState, type RefObject } from "react";
 import { gsap } from "gsap";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import rehypeHighlight from "rehype-highlight";
 import { PROJECT_CARDS, type ProjectCard } from "../config/projects";
 import { useProjectsStripAnimation } from "../hooks/useProjectsStripAnimation";
 
@@ -212,7 +215,12 @@ const ProjectsStrip = ({ introReady = true, shellRef }: ProjectsStripProps) => {
               </div>
 
               <div className="project-modal-body">
-                <ReactMarkdown>{activeProject.bodyMd}</ReactMarkdown>
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  rehypePlugins={[rehypeRaw, rehypeHighlight]}
+                >
+                  {activeProject.bodyMd}
+                </ReactMarkdown>
               </div>
             </div>
           </div>
