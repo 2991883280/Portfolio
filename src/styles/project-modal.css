@@ -308,6 +308,33 @@
     align-items: flex-start;
     gap: 1rem;
   }
+
+  .project-modal-body {
+    overflow-x: auto;
+  }
+
+  .project-modal-body table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Horizontal scrollbar for tables on mobile: slimmer, neon style */
+  .project-modal-body table::-webkit-scrollbar {
+    height: 10px;
+  }
+
+  .project-modal-body table::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 999px;
+  }
+
+  .project-modal-body table::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #b6ff2b, #22c55e);
+    border-radius: 999px;
+  }
 }
 
 /* Project cards in ProjectsStrip */
