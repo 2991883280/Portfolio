@@ -55,24 +55,25 @@ const Hero = ({ introReady = true }: HeroProps) => {
         </svg>
       </div>
 
-      <div className='side-text side-text-left' ref={leftTextRef}>
+      <div className='side-text side-text-left ' ref={leftTextRef}>
         <span>DEV · AI · DESIGN</span>
       </div>
       <div className='side-text side-text-right' ref={rightTextRef}>
-        <span>PORTFOLIO · 2025</span>
+        <span>PORTFOLIO · 20XX</span>
       </div>
 
       <section className='hero-content'>
         <div className='hero-title-block'>
           <h1 className='hero-title-main pacifico-regular' ref={titleRef}>
-            <span className='hero-word'>Dev</span>
-            <span className='hero-word'>Toolkit</span>
-            <span className='hero-word'>for</span>
-            <br />
-            <span className='hero-word'>AI</span>
-            <span className='hero-word'>×</span>
-            <span className='hero-word'>Design</span>
-            <span className='hero-word'>Products</span>
+            <span className='hero-word'>Vision</span>
+            <span className='hero-word'>by</span>
+            <span className='hero-word'>AI,</span>
+            <span className='hero-word'>Bones</span>
+            <span className='hero-word'>by</span>
+            <span className='hero-word'>Code,</span>
+            <span className='hero-word'>Breath</span>
+            <span className='hero-word'>by</span>
+            <span className='hero-word'>Design.</span>
           </h1>
         </div>
       </section>

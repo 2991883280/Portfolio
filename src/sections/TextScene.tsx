@@ -27,7 +27,7 @@ const TextScene = () => {
         {
           opacity: 1,
           y: 0,
-          //  rotation: () => gsap.utils.random(-3, 3),
+          rotation: () => gsap.utils.random(-2, 2),
           duration: 0.6,
           ease: 'back.out(2)',
           stagger: 0.08,
@@ -83,19 +83,16 @@ const TextScene = () => {
       <div className='text-scene-inner' ref={textRef}>
         <div className='text-scene-copy'>
           <p className='text-scene-line text-scene-line--accent'>
-            I'm building a personal "Dev × AI × Design" toolkit for my own work.
+            我正在为自己的创作搭建一套「开发 × AI × 设计」的个人工具箱。
           </p>
           <p className='text-scene-line'>
-            It's not a single project, but a series of experimental products,
-            interactions, and workflows
+            这并非单一项目，而是一系列实验性的产品、交互与工作流
           </p>
           <p className='text-scene-line'>
-            exploring how AI can actually help me ship ideas faster to the
-            screen, instead of just generating a few lines of copy.
+            探索 AI 如何真正帮我把想法更快地落到屏幕上，而不只是生成几行文案
           </p>
           <p className='text-scene-line'>
-            Each module is a reusable building block, serving my own work while
-            leaving hooks open for future collaboration.
+            每个模块都是可复用的积木，服务于我自己的创作，也为未来协作留下接口
           </p>
         </div>
 

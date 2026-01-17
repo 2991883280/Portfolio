@@ -24,7 +24,43 @@
 
 .projects-strip-track {
   display: inline-flex;
+  flex-direction: column;
   gap: 1.5rem;
+}
+
+.projects-timeline-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.projects-card-row {
+  display: flex;
+  align-items: stretch;
+  gap: 1.5rem;
+}
+
+.projects-timeline-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+  width: 317.3px;
+}
+
+.projects-timeline-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: rgba(182, 255, 43, 0.9);
+  box-shadow: 0 0 10px rgba(182, 255, 43, 0.6);
+}
+
+.projects-timeline-date {
+  font-size: 0.9rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(245, 245, 245, 0.7);
 }
 
 .projects-orbit-layer {
