@@ -37,7 +37,7 @@ const Hero = ({ introReady = true }: HeroProps) => {
 
         <svg
           className='hero-orbit-svg'
-          viewBox='0 0 400 160'
+          viewBox='0 0 400 180'
           preserveAspectRatio='xMidYMid meet'
         >
           <path
