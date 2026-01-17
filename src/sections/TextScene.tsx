@@ -81,7 +81,7 @@ const TextScene = () => {
   return (
     <section className='text-scene' ref={sectionRef}>
       <div className='text-scene-inner' ref={textRef}>
-        <div className='text-scene-copy ma-shan-zheng-regular'>
+        <div className='text-scene-copy'>
           <p className='text-scene-line text-scene-line--accent'>
             我正在为自己的创作搭建一套「开发 × AI × 设计」的个人工具箱。
           </p>

@@ -47,9 +47,7 @@ const TopNav = forwardRef<HTMLElement, TopNavProps>(
 
           <div className='top-nav-center'>
             <span className='top-nav-logo'>
-              <span className='top-nav-logo-text ma-shan-zheng-regular'>
-                冷鱼闲风
-              </span>
+              <span className='top-nav-logo-text '>冷鱼闲风</span>
             </span>
           </div>
 
