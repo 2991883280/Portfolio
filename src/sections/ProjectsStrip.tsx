@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type RefObject } from 'react';
+import { useEffect, useRef, useState, useMemo, type RefObject } from 'react';
 import { gsap } from 'gsap';
 import type { Options as ReactMarkdownOptions } from 'react-markdown';
 
@@ -99,6 +99,12 @@ const ProjectsStrip = ({ introReady = true, shellRef }: ProjectsStripProps) => {
   const hoverAudioRef = useRef<HTMLAudioElement | null>(null);
   const expandAudioRef = useRef<HTMLAudioElement | null>(null);
 
+  const sortedProjects = useMemo(() => {
+    return [...PROJECT_CARDS].sort((a, b) =>
+      b.timeline.localeCompare(a.timeline)
+    );
+  }, []);
+
   useProjectsStripAnimation(sectionRef, introReady, shellRef, hoverAudioRef);
 
   // When the modal is open, lock background scroll so only the article scrolls
@@ -164,6 +170,37 @@ const ProjectsStrip = ({ introReady = true, shellRef }: ProjectsStripProps) => {
     setActiveProject(project);
   };
 
+  // Animate timeline row entrance: slide in from right
+  useEffect(() => {
+    if (!sectionRef.current || !introReady) return;
+
+    const ctx = gsap.context(() => {
+      const timelineRow = sectionRef.current!.querySelector<HTMLElement>(
+        '.projects-timeline-row'
+      );
+      const cardRow =
+        sectionRef.current!.querySelector<HTMLElement>('.projects-card-row');
+
+      if (!timelineRow || !cardRow) return;
+
+      gsap.fromTo(
+        timelineRow,
+        { x: 100, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.8, ease: 'power2.out', delay: 0.2 }
+      );
+
+      gsap.fromTo(
+        cardRow,
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out', delay: 0.4 }
+      );
+    }, sectionRef);
+
+    return () => {
+      ctx.revert();
+    };
+  }, [introReady]);
+
   // Animate modal panel entrance: drop down from top with a soft bounce
   useEffect(() => {
     if (!activeProject || !sectionRef.current) return;
@@ -213,25 +250,44 @@ const ProjectsStrip = ({ introReady = true, shellRef }: ProjectsStripProps) => {
       <div className='projects-strip-inner'>
         <div className='projects-strip-label'>PROJECTS · HIGHLIGHTS</div>
         <div className='projects-strip-track'>
-          {PROJECT_CARDS.map((project, index) => {
-            const thumbClass =
-              THUMB_CLASSES[index % THUMB_CLASSES.length] ?? THUMB_CLASSES[0];
-            const projectId = `project-${index + 1}`;
+          <div className='projects-timeline-row'>
+            {sortedProjects.map((project, index) => {
+              const showDot =
+                index === 0 ||
+                project.timeline !== sortedProjects[index - 1].timeline;
+              return (
+                <div key={project.timeline} className='projects-timeline-item'>
+                  {showDot && <span className='projects-timeline-dot' />}
+                  {showDot && (
+                    <span className='projects-timeline-date'>
+                      {project.timeline}
+                    </span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          <div className='projects-card-row'>
+            {sortedProjects.map((project, index) => {
+              const thumbClass =
+                THUMB_CLASSES[index % THUMB_CLASSES.length] ?? THUMB_CLASSES[0];
+              const projectId = `project-${index + 1}`;
 
-            return (
-              <article
-                id='card-click'
-                className='project-card'
-                key={projectId}
-                onClick={() => handleCardClick(project)}
-              >
-                <div className={'project-card-thumb ' + thumbClass} />
-                <h3 className='project-card-title'>{project.title}</h3>
-                <p className='project-card-meta'>{project.meta}</p>
-                <p className='project-card-desc'>{project.desc}</p>
-              </article>
-            );
-          })}
+              return (
+                <article
+                  id='card-click'
+                  className='project-card'
+                  key={projectId}
+                  onClick={() => handleCardClick(project)}
+                >
+                  <div className={'project-card-thumb ' + thumbClass} />
+                  <h3 className='project-card-title'>{project.title}</h3>
+                  <p className='project-card-meta'>{project.meta}</p>
+                  <p className='project-card-desc'>{project.desc}</p>
+                </article>
+              );
+            })}
+          </div>
         </div>
 
         <div className='projects-orbit-layer' aria-hidden='true'>
