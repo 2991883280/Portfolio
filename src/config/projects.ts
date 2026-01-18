@@ -1,111 +1,37 @@
-import generativeSketchpadMd from '@docs/abc.md?raw';
-import generativeSketchpadMd2 from '@docs/abc copy.md?raw';
-
 export type ProjectCard = {
   title: string;
   meta: string;
   desc: string;
-  bodyMd: string;
   timeline: string; // e.g. '2024.03', '2023.11'
+  docPath: string;
 };
 
-export const PROJECT_CARDS: ProjectCard[] = [
-  {
-    title: 'Generative Sketchpad',
-    meta: 'AI · Product · Frontend',
-    desc: 'Real-time canvas for exploring model-assisted drawing and interaction patterns.',
-    bodyMd: generativeSketchpadMd,
-    timeline: '2024.03',
-  },
-  {
-    title: 'Generative Sketchpad2',
-    meta: 'AI · Product · Frontend',
-    desc: 'Real-time canvas for exploring model-assisted drawing and interaction patterns.',
-    bodyMd: generativeSketchpadMd2,
-    timeline: '2023.11',
-  },
-  {
-    title: 'Generative Sketchpad',
-    meta: 'AI · Product · Frontend',
-    desc: 'Real-time canvas for exploring model-assisted drawing and interaction patterns.',
-    bodyMd: generativeSketchpadMd,
-    timeline: '2023.09',
-  },
-  {
-    title: 'Generative Sketchpad',
-    meta: 'AI · Product · Frontend',
-    desc: 'Real-time canvas for exploring model-assisted drawing and interaction patterns.',
-    bodyMd: generativeSketchpadMd2,
-    timeline: '2023.06',
-  },
-  {
-    title: 'Generative Sketchpad',
-    meta: 'AI · Product · Frontend',
-    desc: 'Real-time canvas for exploring model-assisted drawing and interaction patterns.',
-    bodyMd: generativeSketchpadMd,
-    timeline: '2023.03',
-  },
-  {
-    title: 'Generative Sketchpad',
-    meta: 'AI · Product · Frontend',
-    desc: 'Real-time canvas for exploring model-assisted drawing and interaction patterns.',
-    bodyMd: generativeSketchpadMd2,
-    timeline: '2022.12',
-  },
-  {
-    title: 'Generative Sketchpad',
-    meta: 'AI · Product · Frontend',
-    desc: 'Real-time canvas for exploring model-assisted drawing and interaction patterns.',
-    bodyMd: generativeSketchpadMd,
-    timeline: '2022.09',
-  },
-  {
-    title: 'Generative Sketchpad',
-    meta: 'AI · Product · Frontend',
-    desc: 'Real-time canvas for exploring model-assisted drawing and interaction patterns.',
-    bodyMd: generativeSketchpadMd,
-    timeline: '2022.06',
-  },
-  {
-    title: 'Generative Sketchpad',
-    meta: 'AI · Product · Frontend',
-    desc: 'Real-time canvas for exploring model-assisted drawing and interaction patterns.',
-    bodyMd: generativeSketchpadMd,
-    timeline: '2023.09',
-  },
-  {
-    title: 'Generative Sketchpad',
-    meta: 'AI · Product · Frontend',
-    desc: 'Real-time canvas for exploring model-assisted drawing and interaction patterns.',
-    bodyMd: generativeSketchpadMd,
-    timeline: '2023.06',
-  },
-  {
-    title: 'Generative Sketchpad',
-    meta: 'AI · Product · Frontend',
-    desc: 'Real-time canvas for exploring model-assisted drawing and interaction patterns.',
-    bodyMd: generativeSketchpadMd,
-    timeline: '2023.03',
-  },
-  {
-    title: 'Generative Sketchpad',
-    meta: 'AI · Product · Frontend',
-    desc: 'Real-time canvas for exploring model-assisted drawing and interaction patterns.',
-    bodyMd: generativeSketchpadMd,
-    timeline: '2022.12',
-  },
-  {
-    title: 'Generative Sketchpad',
-    meta: 'AI · Product · Frontend',
-    desc: 'Real-time canvas for exploring model-assisted drawing and interaction patterns.',
-    bodyMd: generativeSketchpadMd,
-    timeline: '2022.09',
-  },
-  {
-    title: 'Generative Sketchpad',
-    meta: 'AI · Product · Frontend',
-    desc: 'Real-time canvas for exploring model-assisted drawing and interaction patterns.',
-    bodyMd: generativeSketchpadMd,
-    timeline: '2022.06',
-  },
-];
+type Frontmatter = {
+  title: string;
+  meta: string;
+  desc: string;
+  timeline: string;
+};
+
+type MdxModule = {
+  default: React.ComponentType<Record<string, unknown>>;
+  frontmatter: Frontmatter;
+};
+
+export const mdxFiles = import.meta.glob<MdxModule>('/docs/**/*.mdx', {
+  eager: true,
+});
+
+export const PROJECT_CARDS: ProjectCard[] = Object.entries(mdxFiles).map(
+  ([path, mdxModule]) => {
+    const { frontmatter } = mdxModule;
+
+    return {
+      title: frontmatter.title || '',
+      meta: frontmatter.meta || '',
+      desc: frontmatter.desc || '',
+      timeline: String(frontmatter.timeline) || '',
+      docPath: path,
+    };
+  }
+);
