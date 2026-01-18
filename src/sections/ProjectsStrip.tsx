@@ -173,7 +173,10 @@ const ProjectsStrip = ({ introReady = true, shellRef }: ProjectsStripProps) => {
       // ignore Audio construction errors
     }
 
-    // Load markdown for this project on demand when card is clicked
+    // First open modal with a loading state (no bodyMd yet)
+    setActiveProject({ ...project, bodyMd: undefined });
+
+    // Then load markdown for this project on demand
     // NOTE: mdPath should be the base filename without extension, e.g. 'abc copy'
     (async () => {
       try {
@@ -357,9 +360,13 @@ const ProjectsStrip = ({ introReady = true, shellRef }: ProjectsStripProps) => {
               </div>
 
               <div className='project-modal-body'>
-                <MarkdownBody
-                  bodyMd={activeProject?.bodyMd || '# No content available'}
-                />
+                {activeProject?.bodyMd ? (
+                  <MarkdownBody bodyMd={activeProject.bodyMd} />
+                ) : (
+                  <p style={{ opacity: 0.8, fontSize: '0.9rem' }}>
+                    正在加载文章资源中…
+                  </p>
+                )}
               </div>
             </div>
           </div>

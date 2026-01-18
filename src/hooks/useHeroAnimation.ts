@@ -54,7 +54,7 @@ export const useHeroAnimation = (
         words.forEach((word, index) => {
           const finalText = word.textContent || '';
 
-          word.textContent = '____';
+          word.textContent = '';
 
           gsap.to(word, {
             duration: 2,
