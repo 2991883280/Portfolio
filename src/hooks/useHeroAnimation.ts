@@ -54,7 +54,7 @@ export const useHeroAnimation = (
         words.forEach((word, index) => {
           const finalText = word.textContent || '';
 
-          word.textContent = '____';
+          word.textContent = '';
 
           gsap.to(word, {
             duration: 2,
@@ -171,8 +171,10 @@ export const useHeroAnimation = (
           if (rafId) cancelAnimationFrame(rafId);
           rafId = requestAnimationFrame(() => {
             const vw = window.innerWidth || 1;
+            const vh = window.innerHeight || 1;
             const threshold = 140; // Pixels from each edge
             const x = event.clientX;
+            const y = event.clientY;
 
             // Left side: closer to left edge, text moves slightly inward
             if (leftEl) {
@@ -199,6 +201,20 @@ export const useHeroAnimation = (
               gsap.to(rightEl, {
                 x: rightOffset,
                 duration: 0.35,
+                ease: 'sine.out',
+              });
+            }
+
+            // Hero title parallax: move opposite to mouse
+            if (titleRef.current) {
+              const centerX = vw / 2;
+              const centerY = vh / 2;
+              const offsetX = ((x - centerX) / centerX) * 8;
+              const offsetY = ((y - centerY) / centerY) * 8;
+              gsap.to(titleRef.current, {
+                x: -offsetX,
+                y: -offsetY,
+                duration: 1,
                 ease: 'sine.out',
               });
             }
