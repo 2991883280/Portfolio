@@ -1,5 +1,5 @@
-import generativeSketchpadMd from '@vy/assets/docs/abc.md?raw';
-import generativeSketchpadMd2 from '@vy/assets/docs/abc copy.md?raw';
+import generativeSketchpadMd from '@docs/abc.md?raw';
+import generativeSketchpadMd2 from '@docs/abc copy.md?raw';
 
 export type ProjectCard = {
   title: string;

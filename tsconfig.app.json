@@ -16,7 +16,8 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "paths": {
-      "@vy/*": ["./src/*"]
+      "@vy/*": ["./src/*"],
+      "@docs/*": ["./docs/*"]
     },
     /* Linting */
     "strict": true,
