@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { useBigFooterAnimation } from '@vy/hooks/useBigFooterAnimation';
+import { useBigFooterAnimation } from '@ifc/hooks/useBigFooterAnimation';
 
 const BigFooter = () => {
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -8,7 +8,7 @@ const BigFooter = () => {
   return (
     <section className='big-footer' ref={sectionRef}>
       <div className='big-footer-inner'>
-        <div className='big-footer-wordmark pacifico-regular'>VIYRS</div>
+        <div className='big-footer-wordmark pacifico-regular'>IFCOOL</div>
         <div className='big-footer-orbit-layer' aria-hidden='true'>
           <svg
             className='big-footer-orbit-svg'
@@ -75,7 +75,7 @@ const BigFooter = () => {
                 type='button'
                 aria-label='GitHub'
                 onClick={() => {
-                  window.open('https://github.com/viyrs');
+                  window.open('https://github.com/ifishcool');
                 }}
               >
                 <svg
@@ -94,7 +94,7 @@ const BigFooter = () => {
                 type='button'
                 aria-label='Gitee'
                 onClick={() => {
-                  window.open('https://gitee.com/viyrs');
+                  window.open('https://gitee.com/ifishcool');
                 }}
               >
                 <svg
@@ -111,7 +111,7 @@ const BigFooter = () => {
             </div>
 
             <div className='big-footer-copy'>
-              © {new Date().getFullYear()} VIYRS. All rights reserved.
+              © {new Date().getFullYear()} IFISHCOOL. All rights reserved.
             </div>
           </div>
         </div>

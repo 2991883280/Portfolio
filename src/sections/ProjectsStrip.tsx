@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState, useMemo, type RefObject } from 'react';
 import { gsap } from 'gsap';
-
-import { mdxFiles, PROJECT_CARDS, type ProjectCard } from '@vy/config/projects';
-import { useProjectsStripAnimation } from '@vy/hooks/useProjectsStripAnimation';
+import expandSound from '@ifc/assets/sounds/expand.mp3';
+import {
+  mdxFiles,
+  PROJECT_CARDS,
+  type ProjectCard,
+} from '@ifc/config/projects';
+import { useProjectsStripAnimation } from '@ifc/hooks/useProjectsStripAnimation';
 
 type ProjectsStripProps = {
   introReady?: boolean;
@@ -34,7 +38,20 @@ const THUMB_CLASSES: string[] = [
 
 const ProjectsStrip = ({ introReady = true, shellRef }: ProjectsStripProps) => {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const [activeProject, setActiveProject] = useState<ProjectCard | null>(null);
+  const [activeProject, setActiveProject] = useState<ProjectCard | null>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const titleParam = params.get('title');
+    if (!titleParam) return null;
+
+    const normalized = titleParam.trim().toLowerCase();
+    if (!normalized) return null;
+
+    const target = PROJECT_CARDS.find((p) =>
+      p.title.trim().toLowerCase().includes(normalized)
+    );
+
+    return target ?? null;
+  });
   const hoverAudioRef = useRef<HTMLAudioElement | null>(null);
   const expandAudioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -94,7 +111,7 @@ const ProjectsStrip = ({ introReady = true, shellRef }: ProjectsStripProps) => {
   const handleCardClick = (project: ProjectCard) => {
     try {
       if (!expandAudioRef.current) {
-        expandAudioRef.current = new Audio('/expand.mp3');
+        expandAudioRef.current = new Audio(expandSound);
         expandAudioRef.current.volume = 0.4;
       }
 
