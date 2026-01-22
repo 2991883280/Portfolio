@@ -235,7 +235,10 @@ const ProjectsStrip = ({ introReady = true, shellRef }: ProjectsStripProps) => {
                 index === 0 ||
                 project.timeline !== sortedProjects[index - 1].timeline;
               return (
-                <div key={project.timeline} className='projects-timeline-item'>
+                <div
+                  key={project.timeline + project.title}
+                  className='projects-timeline-item'
+                >
                   {showDot && <span className='projects-timeline-dot' />}
                   {showDot && (
                     <span className='projects-timeline-date'>
@@ -306,6 +309,7 @@ const ProjectsStrip = ({ introReady = true, shellRef }: ProjectsStripProps) => {
                 <div>
                   <div className='project-modal-label'>PROJECT STORY</div>
                   <h2 className='project-modal-title'>{activeProject.title}</h2>
+
                   <div className='project-modal-meta'>{activeProject.meta}</div>
                 </div>
                 <button
@@ -313,7 +317,7 @@ const ProjectsStrip = ({ introReady = true, shellRef }: ProjectsStripProps) => {
                   className='project-modal-close'
                   onClick={handleCloseProject}
                 >
-                  Close
+                  关闭
                 </button>
               </div>
 
