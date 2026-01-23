@@ -1,0 +1,4 @@
+include:
+  - project: 'deploy/ci-yml'
+    ref: master
+    file: 'nodejs_gc/.gitlab-ci-web-portal.yml'

@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "preview": "vite preview",
     "eslint:fix": "eslint --fix",
     "prettier:write": "prettier . --write",
     "prepare": "husky"
