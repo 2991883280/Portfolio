@@ -34,13 +34,6 @@ export default defineConfig({
             if (id.includes('gsap')) {
               return 'gsap';
             }
-            if (
-              id.includes('react-markdown') ||
-              id.includes('remark-gfm') ||
-              id.includes('rehype-highlight')
-            ) {
-              return 'markdown';
-            }
           }
         },
       },

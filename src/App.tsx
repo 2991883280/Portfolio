@@ -4,7 +4,7 @@ import Hero from '@ifc/sections/Hero';
 import IntroGate from '@ifc/components/layout/IntroGate';
 import TopNav from '@ifc/components/layout/TopNav';
 import ProjectsStrip from '@ifc/sections/ProjectsStrip';
-import TextScene from '@ifc/sections/TextScene';
+// import TextScene from '@ifc/sections/TextScene';
 import OpenSourceShowcase from '@ifc/sections/OpenSourceShowcase';
 import BigFooter from '@ifc/sections/BigFooter';
 import { useIntroGate } from '@ifc/hooks/useIntroGate';
@@ -52,9 +52,9 @@ function App() {
             <div id='projects'>
               <ProjectsStrip introReady={introReady} shellRef={shellRef} />
             </div>
-            <div id='about'>
+            {/* <div id='about'>
               <TextScene />
-            </div>
+            </div> */}
             <div id='notes'>
               <OpenSourceShowcase />
             </div>
